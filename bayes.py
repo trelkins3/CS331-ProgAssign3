@@ -10,8 +10,8 @@ for line in file:
 	buffer = line.split()
 	
 	for object in buffer:
-		# Strip punctuation
-		object = object.translate(None, string.punctuation)
+		# Strip punctuation and make lower case
+		object = (object.translate(None, string.punctuation)).lower()
 		if object not in vocabulary:
 			vocabulary.append(object)
 
