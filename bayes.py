@@ -29,9 +29,13 @@ for word in vocabulary:
 
 out.write("classlabel\n")
 
+features = []
+i = 0
+
 #	Generate Feature Set
 file.seek(0)
 for line in file:
+	features.append([])
 	# Tokenize the line
 	buffer = line.split()
 
@@ -40,13 +44,20 @@ for line in file:
 	buffer.pop(len(buffer)-1)
 
 	# Store feature set
+	j = 0
 	for word in vocabulary:
 		if word in buffer:
+			features[i].append(1)
 			out.write("1,")
 		else:
+			features[i].append(0)
 			out.write("0,")
+		j += 1
+	features[i].append(int(value))
 	out.write(str(value))
 	out.write("\n")
+	print(features[i])
+	i += 1
 
 out.close()
 file.close()
