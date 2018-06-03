@@ -43,6 +43,12 @@ for line in file:
 	value = buffer[len(buffer)-1]
 	buffer.pop(len(buffer)-1)
 
+	k = 0
+	for object in buffer:
+		# Strip punctuation and make lower case
+		buffer[k] = (object.translate(None, string.punctuation)).lower()
+		k += 1
+
 	# Store feature set
 	j = 0
 	for word in vocabulary:
@@ -56,8 +62,9 @@ for line in file:
 	features[i].append(int(value))
 	out.write(str(value))
 	out.write("\n")
-	print(features[i])
 	i += 1
 
+print(len(features[0]))
+print(len(vocabulary))
 out.close()
 file.close()
