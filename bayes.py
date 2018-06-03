@@ -18,7 +18,16 @@ for line in file:
 # Alphabetize
 vocabulary.sort()
 
-for thing in vocabulary:
-	print thing
+out  = open("preprocessed_train.txt","w")
+# Write vocab to file
+for word in vocabulary:
+	out.write(str(word))
+	out.write(",")
+
+out.write("classlabel\n")
+
+#	Generate Feature Set
+for line in file:
+	buffer = line.spit()
 
 file.close()
