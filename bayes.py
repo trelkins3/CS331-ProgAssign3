@@ -5,6 +5,7 @@ train = open('trainingSet.txt')
 test  = open('testSet.txt')
 out  = open("preprocessed_train.txt","w")
 testout = open("preprocessed_test.txt","w")
+res = open("results.txt","w")
 
 ##### Train Section #####
 vocabulary = []
@@ -98,11 +99,6 @@ total = i
 # Percentage of positive reviews
 poschance = float(poscount) / float(total)
 negchance = float(negcount) / float(total) 
-print("poscount: ", poscount)
-print("negcount: ", negcount)
-print("total: ", total)
-print("label percentage: ", poschance)
-print("Not label percentage: ", negchance)
 
 # Sums of positive and negative feature sets
 possums = []
@@ -174,16 +170,16 @@ for line in train:
 
 	i += 1
 
-print("results: ",results)
-print("length: " ,len(results))
-
 correct = 0
 for i in range(0,total):
 	if (int(results[i]) == int(values[i])):
 		correct += 1
 
-accuracy = float(correct)/float(total)
-print("accuracy: ", accuracy)
+trainaccuracy = float(correct)/float(total)
+print("Accuracy for training set: ", trainaccuracy)
+res.write("Results\n\nAccuracy when training with training set and testing with training set: ")
+res.write(str(trainaccuracy))
+res.write("\n")
 
 
 
@@ -251,12 +247,65 @@ for line in test:
 	testout.write("\n")
 	i += 1
 
-print(len(testfeatures[0]))
-print(len(testvocab))
-print(len(features[0]))
-print(len(vocabulary))
+testtotal = i
+
+# Predict testing data
+test.seek(0)
+results  = []
+i = 0
+for line in test:
+	postemp1 = 1
+	postemp0 = 1
+	negtemp1 = 1
+	negtemp0 = 1
+	postemp  = 1
+	negtemp  = 1
+	# Tokenize  the line
+	buffer = line.split()
+
+	# Remove the classlabel
+	buffer.pop(len(buffer)-1)
+
+	# Strip punctuation and make lower case
+	k = 0
+	for object in buffer:
+		buffer[k] = (object.translate(None, string.punctuation)).lower()
+		k += 1
+	
+	for j in range(0,len(vocabulary)-1):
+		if vocabulary[j] in buffer:
+			postemp1 = float(postemp1)*float(posprob1[j])
+			negtemp1 = float(negtemp1)*float(negprob1[j])
+		else:
+			postemp0 = float(postemp0)*float(posprob0[j])
+			negtemp0 = float(negtemp0)*float(negprob0[j])
+
+	postemp = float(postemp1)*float(postemp0)*float(poschance)
+	negtemp = float(negtemp1)*float(negtemp0)*float(negchance)
+
+	results.append(0)
+	if (float(postemp)>float(negtemp)):
+		results[i] = 1
+	else:
+		results[i] = 0
+
+	i += 1
+
+correct = 0
+for i in range(0,testtotal):
+	if (int(results[i]) == int(testvalues[i])):
+		correct += 1
+
+testaccuracy = float(correct)/float(testtotal)
+print("Accuracy for testing set: ", testaccuracy)
+res.write("\nAccuracy when training with training set and testing with testing set: ")
+res.write(str(testaccuracy))
+res.write("\n")
+
 out.close()
 testout.close()
+test.close()
 train.close()
+res.close()
 
 # Let's compartmentalize some of these into functions so it's easier to read
