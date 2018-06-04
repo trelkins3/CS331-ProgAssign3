@@ -73,7 +73,12 @@ for line in train:
 	i += 1
 
 # Percentage of positive reviews
-print(float(trainHold) / float(i))
+label = float(trainHold) / float(i)
+notLabel = 1 - label
+print("i: ", i)
+print("label percentage: ", label)
+print("Not label percentage: ", notLabel)
+
 
 ##### Test section #####
 testvocab = []
