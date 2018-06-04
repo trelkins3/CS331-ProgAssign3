@@ -33,7 +33,7 @@ for word in vocabulary:
 out.write("classlabel\n")
 
 features  = []
-positives = []
+positives = [[]]
 negatives = []
 values 	 = []
 i = 0
@@ -91,14 +91,35 @@ for line in train:
 	out.write("\n")
 	i += 1
 
+total = i	
 # Percentage of positive reviews
-label = float(poscount) / float(i)
-notLabel = float(negcount) / float(i) 
+label = float(poscount) / float(total)
+notLabel = float(negcount) / float(total) 
 print("poscount: ", poscount)
 print("negcount: ", negcount)
-print("i: ", i)
+print("total: ", total)
 print("label percentage: ", label)
 print("Not label percentage: ", notLabel)
+
+# Sums of positive and negative feature sets
+print("lenght of row: ", len(positives[0]))
+print("length of vocab: ", len(vocabulary))
+#print(positives)
+print(negatives)
+possums = [sum(col) for col in zip(*positives)]
+#for i in range(0, len(vocabulary)-1):
+#	possums.append([])
+#	possums[i] = sum(row[0] for row in positives)
+#for i in range(0,poscount-1):
+#	possums.append([])
+#	possums[i] = sum(positives[i]) 
+negsums = []
+#for i in range(0,negcount-1):
+#	negsums.append([])
+#	negsums[i] = sum(negatives[i])
+print("possums: ", possums)
+#print("negsums: ", negsums)
+print("length of sums: ", len(possums))
 
 
 ##### Test section #####
