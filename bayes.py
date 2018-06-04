@@ -32,17 +32,20 @@ for word in vocabulary:
 
 out.write("classlabel\n")
 
-features = []
+features  = []
+positives = []
+negatives = []
 values 	 = []
 i = 0
-trainHold = 0
+poscount = 0
+negcount = 0
 
 #	Generate Feature Set
 train.seek(0)
 for line in train:
-	features.append([])
 	# Tokenize the line
 	buffer = line.split()
+	features.append([])
 
 	# Store the classlable and remove it from buffer
 	values.append(buffer[len(buffer)-1])
@@ -55,26 +58,44 @@ for line in train:
 		k += 1
 
 	# Store feature set
-	j = 0
 	for word in vocabulary:
-		if word in buffer:
-			features[i].append(1)
-			out.write("1,")
+		# If the review is positive store it in the positives
+		if(int(values[i]) == 1):
+			positives.append([])
+			if word in buffer:
+				positives[poscount].append(1)
+				features[i].append(1)
+				out.write("1,")
+			else:
+				positives[poscount].append(0)
+				features[i].append(0)
+				out.write("0,")
+		# If the review is negative store it in the negatives
 		else:
-			features[i].append(0)
-			out.write("0,")
-		j += 1
+			negatives.append([])
+			if word in buffer:
+				negatives[negcount].append(1)
+				features[i].append(1)
+				out.write("1,")
+			else:
+				negatives[negcount].append(0)
+				features[i].append(0)
+				out.write("0,")
 		
-	if(int(values[i]) == 1):
-		trainHold = trainHold + 1
+	if(int(values[i])==1):
+		poscount += 1
+	else:
+		negcount += 1
 	features[i].append(int(values[i]))
 	out.write(str(values[i]))
 	out.write("\n")
 	i += 1
 
 # Percentage of positive reviews
-label = float(trainHold) / float(i)
-notLabel = 1 - label
+label = float(poscount) / float(i)
+notLabel = float(negcount) / float(i) 
+print("poscount: ", poscount)
+print("negcount: ", negcount)
 print("i: ", i)
 print("label percentage: ", label)
 print("Not label percentage: ", notLabel)
