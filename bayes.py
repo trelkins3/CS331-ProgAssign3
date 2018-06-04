@@ -33,7 +33,7 @@ for word in vocabulary:
 out.write("classlabel\n")
 
 features  = []
-positives = [[]]
+positives = []
 negatives = []
 values 	 = []
 i = 0
@@ -96,28 +96,41 @@ for line in train:
 
 total = i	
 # Percentage of positive reviews
-label = float(poscount) / float(total)
-notLabel = float(negcount) / float(total) 
+poschance = float(poscount) / float(total)
+negchance = float(negcount) / float(total) 
 print("poscount: ", poscount)
 print("negcount: ", negcount)
 print("total: ", total)
-print("label percentage: ", label)
-print("Not label percentage: ", notLabel)
+print("label percentage: ", poschance)
+print("Not label percentage: ", negchance)
 
 # Sums of positive and negative feature sets
 possums = []
 for i in range(0,len(vocabulary)-1):
 	possums.append(0)
-	for j in range(0, len(positives)-1):
+	for j in range(0, poscount-1):
 		possums[i] = (int(possums[i]) + positives[j][i])
 negsums = []
 for i in range(0,len(vocabulary)-1):
 	negsums.append(0)
-	for j in range(0, len(negatives)-1):
+	for j in range(0, negcount-1):
 		negsums[i] = (int(negsums[i]) + negatives[j][i])
-print("possums: ", possums)
-print("negsums: ", negsums)
 
+# Probabilities of positives and negatives features sets
+posprob1 = []
+posprob0 = []
+for i in range(0,len(possums)-1):
+	posprob1.append(0)
+	posprob0.append(0)
+	posprob1[i] = (float(possums[i])+1)/(float(poscount)+2)
+	posprob0[i] = (float(poscount)-float(possums[i])+1)/(float(poscount)+2)
+negprob1 = []
+negprob0 = []
+for i in range(0,len(negsums)-1):
+	negprob1.append(0)
+	negprob0.append(0)
+	negprob1[i] = (float(negsums[i])+1)/(float(negcount)+2)
+	negprob0[i] = (float(negcount)-float(negsums[i])+1)/(float(negcount)+2)
 
 ##### Test section #####
 testvocab = []
