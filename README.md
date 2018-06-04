@@ -1,6 +1,11 @@
 # cs331assign4
 Next steps:<br>
-1. Calculate probabilities for every feature for classLabel = 0 and classLabel = 1.
+1. Calculate probabilities for every feature for classLabel = 0 and classLabel = 1.<br>
+    b.<br>
+       P(word = 1 | positive) =
+          (word.count.positive+1)/(sentence.count.positive+2)<br>
+       P(word = 0 | postivie) =
+          (sentence.count.positive-word.count.positive+1)/(sentence.count.positive+2)<br>
 2. Encode logic to choose which probabilities to access from vectors.
 3. Calculate and compare classification probabilities, make classification.
 4. Perform classification on training and testing sets to determine baseline performance benchmark.
