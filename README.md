@@ -1,6 +1,6 @@
 # cs331assign4
 Next steps:<br>
-1. Calculate probabilities for every feature for classLabel = 0 and classLabel = 1.
+1. Calculate probabilities for every feature for classLabel = 0 and classLabel = 1.<br<
     b.
        P(word = 1 | positive) =
           (word.count.positive+1)/(sentence.count.positive+2)
