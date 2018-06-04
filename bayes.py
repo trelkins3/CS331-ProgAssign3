@@ -32,6 +32,7 @@ for word in vocabulary:
 out.write("classlabel\n")
 
 features = []
+values 	 = []
 i = 0
 
 #	Generate Feature Set
@@ -42,7 +43,7 @@ for line in file:
 	buffer = line.split()
 
 	# Store the classlable and remove it from buffer
-	value = buffer[len(buffer)-1]
+	values.append(buffer[len(buffer)-1])
 	buffer.pop(len(buffer)-1)
 
 	k = 0
@@ -61,8 +62,8 @@ for line in file:
 			features[i].append(0)
 			out.write("0,")
 		j += 1
-	features[i].append(int(value))
-	out.write(str(value))
+	features[i].append(int(values[i]))
+	out.write(str(values[i]))
 	out.write("\n")
 	i += 1
 
@@ -92,6 +93,7 @@ for word in testvocab:
 testout.write("classlabel\n")
 
 testfeatures = []
+testvalues   = []
 i = 0
 
 #	Generate Feature Set
@@ -102,7 +104,7 @@ for line in test:
 	buffer = line.split()
 
 	# Store the classlable and remove it from buffer
-	value = buffer[len(buffer)-1]
+	testvalues.append(buffer[len(buffer)-1])
 	buffer.pop(len(buffer)-1)
 
 	k = 0
@@ -121,8 +123,8 @@ for line in test:
 			testfeatures[i].append(0)
 			testout.write("0,")
 		j += 1
-	testfeatures[i].append(int(value))
-	testout.write(str(value))
+	testfeatures[i].append(int(testvalues[i]))
+	testout.write(str(testvalues[i]))
 	testout.write("\n")
 	i += 1
 
