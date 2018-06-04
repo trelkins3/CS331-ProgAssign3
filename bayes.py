@@ -50,6 +50,11 @@ for line in train:
 	# Store the classlable and remove it from buffer
 	values.append(buffer[len(buffer)-1])
 	buffer.pop(len(buffer)-1)
+	
+	if(int(values[i]) == 1):
+		positives.append([])
+	else:
+		negatives.append([])
 
 	k = 0
 	for object in buffer:
@@ -61,7 +66,6 @@ for line in train:
 	for word in vocabulary:
 		# If the review is positive store it in the positives
 		if(int(values[i]) == 1):
-			positives.append([])
 			if word in buffer:
 				positives[poscount].append(1)
 				features[i].append(1)
@@ -72,7 +76,6 @@ for line in train:
 				out.write("0,")
 		# If the review is negative store it in the negatives
 		else:
-			negatives.append([])
 			if word in buffer:
 				negatives[negcount].append(1)
 				features[i].append(1)
@@ -102,24 +105,18 @@ print("label percentage: ", label)
 print("Not label percentage: ", notLabel)
 
 # Sums of positive and negative feature sets
-print("lenght of row: ", len(positives[0]))
-print("length of vocab: ", len(vocabulary))
-#print(positives)
-print(negatives)
-possums = [sum(col) for col in zip(*positives)]
-#for i in range(0, len(vocabulary)-1):
-#	possums.append([])
-#	possums[i] = sum(row[0] for row in positives)
-#for i in range(0,poscount-1):
-#	possums.append([])
-#	possums[i] = sum(positives[i]) 
+possums = []
+for i in range(0,len(vocabulary)-1):
+	possums.append(0)
+	for j in range(0, len(positives)-1):
+		possums[i] = (int(possums[i]) + positives[j][i])
 negsums = []
-#for i in range(0,negcount-1):
-#	negsums.append([])
-#	negsums[i] = sum(negatives[i])
+for i in range(0,len(vocabulary)-1):
+	negsums.append(0)
+	for j in range(0, len(negatives)-1):
+		negsums[i] = (int(negsums[i]) + negatives[j][i])
 print("possums: ", possums)
-#print("negsums: ", negsums)
-print("length of sums: ", len(possums))
+print("negsums: ", negsums)
 
 
 ##### Test section #####
