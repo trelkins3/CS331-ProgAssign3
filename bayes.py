@@ -1,14 +1,15 @@
 import numpy as np
 import string
 
-file = open('trainingSet.txt')
+train = open('trainingSet.txt')
 test  = open('testSet.txt')
 out  = open("preprocessed_train.txt","w")
 testout = open("preprocessed_test.txt","w")
 
+##### Train Section #####
 vocabulary = []
 
-for line in file:
+for line in train:
 	# Tokenize the line
 	buffer = line.split()
 
@@ -34,10 +35,11 @@ out.write("classlabel\n")
 features = []
 values 	 = []
 i = 0
+trainHold = 0
 
 #	Generate Feature Set
-file.seek(0)
-for line in file:
+train.seek(0)
+for line in train:
 	features.append([])
 	# Tokenize the line
 	buffer = line.split()
@@ -62,11 +64,18 @@ for line in file:
 			features[i].append(0)
 			out.write("0,")
 		j += 1
+		
+	if(int(values[i]) == 1):
+		trainHold = trainHold + 1
 	features[i].append(int(values[i]))
 	out.write(str(values[i]))
 	out.write("\n")
 	i += 1
 
+# Percentage of positive reviews
+print(float(trainHold) / float(i))
+
+##### Test section #####
 testvocab = []
 
 for line in test:
@@ -95,6 +104,7 @@ testout.write("classlabel\n")
 testfeatures = []
 testvalues   = []
 i = 0
+testHold = 0
 
 #	Generate Feature Set
 test.seek(0)
@@ -123,6 +133,7 @@ for line in test:
 			testfeatures[i].append(0)
 			testout.write("0,")
 		j += 1
+	
 	testfeatures[i].append(int(testvalues[i]))
 	testout.write(str(testvalues[i]))
 	testout.write("\n")
@@ -134,4 +145,6 @@ print(len(features[0]))
 print(len(vocabulary))
 out.close()
 testout.close()
-file.close()
+train.close()
+
+# Let's compartmentalize some of these into functions so it's easier to read
