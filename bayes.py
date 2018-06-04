@@ -1,3 +1,7 @@
+# Assignment 3 by
+# Trey Elkins 
+# Owen Loughran
+# 06/04/2018
 import numpy as np
 import string
 
